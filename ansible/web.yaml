@@ -1,0 +1,27 @@
+---
+- hosts: web
+  remorte_user: ubuntu
+  become: yes
+  vars:
+    - dir_name: test 
+  tasks:
+    - name: update
+      apt: 
+        update_cache: yes   
+
+    - name: install apache
+      apt: 
+        name: httpd
+        state: present   
+    - name: create new file 
+      file:
+        path: "{{ dir_name }}"
+        state: directory
+
+    - name: list the content
+      commend: "ls {{ dir_name }}"
+      register: results
+    - name: print list
+      debug: 
+        var: result.stdout  
+         
