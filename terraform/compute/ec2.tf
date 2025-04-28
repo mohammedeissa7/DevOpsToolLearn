@@ -17,17 +17,15 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "bastion" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-  subnet_id = module.network.public_subnet_id_1
-  security_groups = aws_security_group.SG7.id
-  provisioner "local-exec" {
-	 command = "echo The server's IP address is ${self.public_ip}"
-	}
+  subnet_id = var.network_public_subnet_id_1
+  security_groups = [aws_security_group.SG7.id]
+
 
 }
 
 resource "aws_instance" "application" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-  subnet_id = module.network.private_subnet_id_1
-  security_groups = aws_security_group.SG8.id
+  subnet_id = var.network_private_subnet_id_1
+  security_groups = [aws_security_group.SG8.id]
 }
